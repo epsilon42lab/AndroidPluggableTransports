@@ -37,7 +37,8 @@ public interface DispatchConstants {
     public final static String PT_TRANSPORTS_OBFS4 = "obfs4";
     public final static String PT_TRANSPORTS_SHADOWSOCKS = "ss";
     public final static String PT_TRANSPORTS_SNOWFLAKE = "snowflake";
-
+    public final static String PT_TRANSPORTS_STEGOTORUS = "stegotorus";
+ 
     // goptbundle env var names
     public static final String TOR_PT_LOG_LEVEL = "TOR_PT_LOG_LEVEL";
     /**

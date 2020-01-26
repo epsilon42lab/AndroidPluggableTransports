@@ -49,7 +49,7 @@ public class SampleClientActivity extends Activity {
               //  return initMeekTransport();
 
                 return initObfs4Transport();
-                //   initSampleTransport();
+                //return  initSampleTransport();
 
             }
 
