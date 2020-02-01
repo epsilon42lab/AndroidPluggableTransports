@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -23,6 +24,7 @@ import info.pluggabletransports.dispatch.Dispatcher;
 import info.pluggabletransports.dispatch.Transport;
 import info.pluggabletransports.dispatch.transports.legacy.MeekTransport;
 import info.pluggabletransports.dispatch.transports.legacy.Obfs4Transport;
+import info.pluggabletransports.dispatch.transports.StegotorusTransport;
 
 public class SampleClientActivity extends Activity {
 
@@ -30,7 +32,6 @@ public class SampleClientActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_client);
-
 
     }
 
@@ -48,8 +49,8 @@ public class SampleClientActivity extends Activity {
 
               //  return initMeekTransport();
 
-                return initObfs4Transport();
-                //return  initSampleTransport();
+              // return initObfs4Transport();
+              return initStegotorusTransport();
 
             }
 
@@ -134,7 +135,7 @@ public class SampleClientActivity extends Activity {
         Properties options = new Properties();
 
         /**
-        //these values come from the public obfs4 endpoint you are running; you can't use Tor's OBFS4 bridges, you need your own
+         these values come from the public obfs4 endpoint you are running; you can't use Tor's OBFS4 bridges, you need your own
         options.put(Obfs4Transport.OPTION_ADDRESS,"xxx.xxx.xxx.xxx:1234"); //the host:port where the bridge is running
         options.put(Obfs4Transport.OPTION_CERT,"your obfs4 cert value goes here"); //looks like: ApWvCPD2uhjeAgaeS4Lem5PudwHLkmeQfEMMGoOkDJqZoeCq9bzLf/q/oGIggvB0b0VObg
          **/
@@ -196,6 +197,50 @@ public class SampleClientActivity extends Activity {
 
         return null;
     }
+
+
+      private String initStegotorusTransport() {
+
+        new StegotorusTransport().register();
+
+        String remoteAddress = "127.0.0.1:4999";
+        Properties options = new Properties();
+        //options.put(SampleTransport.SAMPLE_SPECIAL_OPTION, "thesecret");
+
+        Connection conn = null;
+        Transport transport = Dispatcher.get().getTransport(this, "stegotorus", options);
+
+        if (transport != null)
+            conn = transport.connect(remoteAddress);
+
+        if (conn != null) {
+            //now use the connection, either as a proxy, or to read and write bytes directly
+            if (conn.getLocalAddress() != null && conn.getLocalPort() != -1) {
+                //setSocksProxy(conn.getLocalAddress(), conn.getLocalPort());
+                // No socks support yet
+            } else {
+
+                //or read and write bytes directly!
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                try {
+                    baos.write("GET https://somewebsite.org/TheProject.html HTTP/1.0".getBytes());
+                    conn.write(baos.toByteArray());
+
+                    byte[] buffer = new byte[1024 * 64];
+                    int read = conn.read(buffer, 0, buffer.length);
+                    String response = new String(buffer);
+                    String log = new String(response);
+                    return log;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return "something went wrong";
+
+      }
 
     /**
     private void initSampleTransport() {

@@ -57,6 +57,7 @@ dependencies {
     implementation 'info.pluggabletransports.aptds:apt-dispatch-library:1.0.6'
     implementation 'info.pluggabletransports.aptds:apt-meek-obfs4-legacy:1.0.6'
 
+    implementation project(path: ':APTDispatchLibrary-Stegotorus-Full')
     //implementation project (":APTDispatchLibrary")
     //implementation project (":APTDispatchLibrary-MeekObfs4-Legacy")
 
