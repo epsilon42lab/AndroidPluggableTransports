@@ -10,7 +10,7 @@ import info.pluggabletransports.dispatch.Listener;
 import info.pluggabletransports.dispatch.Transport;
 import info.pluggabletransports.dispatch.util.TransportManager;
 
-import static info.pluggabletransports.dispatch.DispatchConstants.PT_TRANSPORTS_SHADOWSOCKS;
+import static info.pluggabletransports.dispatch.DispatchConstants.PT_TRANSPORTS_STEGOTORUS;
 
 public class StegotorusTransport implements Transport {
 
@@ -20,45 +20,42 @@ public class StegotorusTransport implements Transport {
 
     @Override
     public void register() {
-        Dispatcher.get().register(PT_TRANSPORTS_SHADOWSOCKS, getClass());
+        Dispatcher.get().register(PT_TRANSPORTS_STEGOTORUS, getClass());
     }
 
     @Override
     public void init(Context context, Properties options) {
 
         mTransportManager = new TransportManager() {
-            public  void startTransportSync ()
-            {
+            public void startTransportSync() {
                 try {
 
-                        // String serverAddress = "172.104.48.102";
-                        // String serverPort = "443";
-                        // String serverPassword = "zomzom123";
-                        // String serverCipher = "aes-128-cfb";
-                        // String localAddress = "127.0.0.1";
-                        // String localPort = "31059";
-                  
-                        String serverAddress = "127.0.0.1";
-                        String serverPort = "5000";
-                        String serverPassword = "zomzom123";
-                        String serverCipher = "aes-128-cfb";
-                        String localAddress = "127.0.0.1";
-                        String localPort = "4449";
+                    // String serverAddress = "172.104.48.102";
+                    // String serverPort = "443";
+                    // String serverPassword = "zomzom123";
+                    // String serverCipher = "aes-128-cfb";
+                    // String localAddress = "127.0.0.1";
+                    // String localPort = "31059";
 
-                        StringBuffer cmd = new StringBuffer();
-                        cmd.append(mFileTransport.getCanonicalPath()).append(' ');
-                        cmd.append("--config-file=").append(mFileTransport.getParent()).append("/chop-nosteg-rr-client.yaml").append(' ');
-                        // cmd.append("-p ").append(serverPort).append(' ');
-                        // cmd.append("-k ").append(serverPassword).append(' ');
-                        // cmd.append("-m ").append(serverCipher).append(' ');
-                        // cmd.append("-b ").append(localAddress).append(' ');
-                        // cmd.append("-l ").append(localPort).append(' ');
+                    String serverAddress = "127.0.0.1";
+                    String serverPort = "5000";
+                    String serverPassword = "zomzom123";
+                    String serverCipher = "aes-128-cfb";
+                    String localAddress = "127.0.0.1";
+                    String localPort = "4449";
 
-                        exec(cmd.toString(), false);
+                    StringBuffer cmd = new StringBuffer();
+                    cmd.append(mFileTransport.getCanonicalPath()).append(' ');
+                    cmd.append("--config-file=").append(mFileTransport.getParent()).append("/chop-nosteg-rr-client.yaml").append(' ');
+                    // cmd.append("-p ").append(serverPort).append(' ');
+                    // cmd.append("-k ").append(serverPassword).append(' ');
+                    // cmd.append("-m ").append(serverCipher).append(' ');
+                    // cmd.append("-b ").append(localAddress).append(' ');
+                    // cmd.append("-l ").append(localPort).append(' ');
 
-                }
-                catch (Exception ioe)
-                {
+                    exec(cmd.toString(), false);
+
+                } catch (Exception ioe) {
                     debug("Couldn't install transport: " + ioe);
                 }
             }

@@ -27,8 +27,8 @@ android {
 }
 
 dependencies {
-    implementation 'info.pluggabletransports.aptds:apt-dispatch-library:1.0.1'
-
+    //implementation 'info.pluggabletransports.aptds:apt-dispatch-library:1.0.1'
+    implementation project(path: ':APTDispatchLibrary')
 }
 
 sourceCompatibility = "1.7"
@@ -43,7 +43,7 @@ uploadArchives {
             repository(url: "file://${deployPath.absolutePath}")
             pom.project {
                 groupId 'info.pluggabletransports.aptds'
-                artifactId 'apt-shadowsocks'
+                artifactId 'apt-stegotorus'
                 version "1.0.2"
             }
         }
