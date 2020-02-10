@@ -5,11 +5,13 @@ import android.util.Log;
 
 import java.util.Properties;
 import java.util.HashMap;
+import java.io.File;
 
 import info.pluggabletransports.dispatch.Connection;
 import info.pluggabletransports.dispatch.Dispatcher;
 import info.pluggabletransports.dispatch.Listener;
 import info.pluggabletransports.dispatch.Transport;
+import info.pluggabletransports.dispatch.util.ResourceInstaller;
 import info.pluggabletransports.dispatch.util.TransportListener;
 import info.pluggabletransports.dispatch.util.TransportManager;
 
@@ -67,12 +69,32 @@ public class StegotorusTransport implements Transport {
                 } catch (Exception ioe) {
                     debug("Couldn't install transport: " + ioe);
                 }
+
+            }
+
+            @Override
+            public File installTransport (Context context, String assetKey)
+            {
+                ResourceInstaller binaryInstaller = new ResourceInstaller(context, context.getFilesDir());
+
+                try {
+                    binaryInstaller.installResource(assetKey, true);
+                    mFileTransport = new File(context.getFilesDir(), assetKey);
+                }
+                catch (Exception ioe)
+                {
+                    debug("Couldn't install transport: " + ioe);
+                }
+
+                return mFileTransport;
             }
 
         };
 
         mTransportManager.installTransport(context, ASSET_KEY);
     }
+
+
 
     @Override
     public Connection connect(String addr) {

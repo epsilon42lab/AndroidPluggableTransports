@@ -68,7 +68,8 @@ public class ResourceInstaller implements DispatchConstants {
 
             installFolder.mkdirs();
 
-            is = context.getAssets().open('/' + assetKey);
+            is = context.getAssets().open(assetKey);
+            //is = context.getAssets().open('/' + assetKey);
             streamToFile(is, outFile, false, true);
             setExecutable(outFile);
         }

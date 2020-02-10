@@ -27,8 +27,8 @@ android {
 }
 
 dependencies {
-    implementation 'info.pluggabletransports.aptds:apt-dispatch-library:1.0.6'
-    //implementation project(path: ':APTDispatchLibrary')
+    //implementation 'info.pluggabletransports.aptds:apt-dispatch-library:1.0.6'
+    implementation project(path: ':APTDispatchLibrary')
 }
 
 sourceCompatibility = "1.7"

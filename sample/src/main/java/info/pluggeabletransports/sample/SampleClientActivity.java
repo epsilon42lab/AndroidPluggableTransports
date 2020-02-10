@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -26,6 +27,10 @@ import info.pluggabletransports.dispatch.transports.legacy.MeekTransport;
 import info.pluggabletransports.dispatch.transports.legacy.Obfs4Transport;
 import info.pluggabletransports.dispatch.transports.StegotorusTransport;
 
+import android.content.res.AssetManager;
+
+import static android.content.ContentValues.TAG;
+
 public class SampleClientActivity extends Activity {
 
     @Override
@@ -38,7 +43,24 @@ public class SampleClientActivity extends Activity {
     public void connectClicked (View view)
     {
 
-        // The Very Basic
+        AssetManager assetManager = getAssets();
+
+      try {
+        String[] assetPath = assetManager.list("");
+        for (int i = 0; i < assetPath.length; i++) {
+            try {
+          InputStream is = assetManager.open(assetPath[i]);
+          Log.d(TAG, assetPath[i]);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            }
+
+        }
+      } catch (IOException e) {
+        Log.e(TAG, e.getMessage());
+      }
+
+      // The Very Basic
         new AsyncTask<Void, Void, String>() {
             protected void onPreExecute() {
                 // Pre Code
