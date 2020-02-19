@@ -203,7 +203,7 @@ public class SampleClientActivity extends Activity {
 
                         //otherwise you can send and receive raw bytes to whatever socket/port your obfs4 is connected to
 
-                        ptConn.write("GET /index.html HTTP/1.0".getBytes());
+                        ptConn.write("GET /index.html HTTP/1.0\r\n\r\n".getBytes());
                         byte[] resp = new byte[1000];
                         ptConn.read(resp, 0, resp.length);
                         ptConn.close();
@@ -249,7 +249,7 @@ public class SampleClientActivity extends Activity {
                 //or read and write bytes directly!
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 try {
-                    baos.write("GET https://somewebsite.org/TheProject.html HTTP/1.0".getBytes());
+                    baos.write("GET http://example.org/index.html HTTP/1.0\r\n\r\n".getBytes());
                     conn.write(baos.toByteArray());
 
                     byte[] buffer = new byte[1024 * 64];

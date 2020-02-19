@@ -1,7 +1,7 @@
 ####################################
 # process options
 ####################################
-log-min-severity:  debug
+log-min-severity:  info
 timestamp-logs: true
 
 ####################################
@@ -11,7 +11,7 @@ protocols:
   - name: "chop"
     mode: client
     up-address: 127.0.0.1:4999
-    disable-retransmit: true 
+    disable-retransmit: true
     stegs:
       - name: nosteg
-        down-address: 127.0.0.1:5000
+        down-address: 192.168.1.131:5000
