@@ -75,18 +75,19 @@ public abstract class TransportManager {
 
         String line = null;
 
-        while(mTransportThread.isAlive())
-        {
+        while(mTransportThread.isAlive()) {
             line = br.readLine();
-            debug(line);
+            if (line != null) {
+                debug(line);
 
-            if (line.contains("socks5")) {
-                String[] parts = line.split(" ");
-                for (String part : parts) {
-                    if (part.contains("127.0.0.1")) {
-                        String[] addrParts = part.split(":");
-                        listener.transportStarted(Integer.parseInt(addrParts[1]));
+                if (line.contains("socks5")) {
+                    String[] parts = line.split(" ");
+                    for (String part : parts) {
+                        if (part.contains("127.0.0.1")) {
+                            String[] addrParts = part.split(":");
+                            listener.transportStarted(Integer.parseInt(addrParts[1]));
 
+                        }
                     }
                 }
             }
