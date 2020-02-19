@@ -24,7 +24,9 @@ public class StegotorusTransport implements Transport {
     private final static String ASSET_CONF = "chop-nosteg-client.yaml";
     private TransportManager mTransportManager;
 
-  private int mLocalSocksPort = -1;
+    private int mLocalSocksPort = -1;
+
+    private File mTransportConfigFile = null;
 
     @Override
     public void register() {
@@ -54,7 +56,7 @@ public class StegotorusTransport implements Transport {
 
                     StringBuffer cmd = new StringBuffer();
                     cmd.append(mFileTransport.getCanonicalPath()).append(' ');
-                    cmd.append("--config-file=").append(mFileTransport.getParent()).append("/chop-nosteg-rr-client.yaml").append(' ');
+                    cmd.append("--config-file=").append(mTransportConfigFile);
                     // cmd.append("-p ").append(serverPort).append(' ');
                     // cmd.append("-k ").append(serverPassword).append(' ');
                     // cmd.append("-m ").append(serverCipher).append(' ');
@@ -63,38 +65,32 @@ public class StegotorusTransport implements Transport {
 
                     HashMap<String, String> env = new HashMap<>(); //we don't have environmental variable
                     //we just need it to be able to call exec
-                    
+
                     exec(cmd.toString(), false, env, listener);
 
                 } catch (Exception ioe) {
-                    debug("Couldn't install transport: " + ioe);
+                    debug("Couldn't initiate transport: " + ioe);
                 }
 
             }
-
-            @Override
-            public File installTransport (Context context, String assetKey)
-            {
-                ResourceInstaller binaryInstaller = new ResourceInstaller(context, context.getFilesDir());
-
-                try {
-                    binaryInstaller.installResource(assetKey, true);
-                    mFileTransport = new File(context.getFilesDir(), assetKey);
-                }
-                catch (Exception ioe)
-                {
-                    debug("Couldn't install transport: " + ioe);
-                }
-
-                return mFileTransport;
-            }
-
         };
 
         mTransportManager.installTransport(context, ASSET_KEY);
+        installTransportConfiguration(context, ASSET_CONF);
+    };
+
+
+    public File installTransportConfiguration(Context context, String assetKey) {
+        ResourceInstaller configInstaller = new ResourceInstaller(context, context.getFilesDir());
+        try {
+             configInstaller.installConfig(assetKey, true);
+             mTransportConfigFile = new File(context.getFilesDir(), assetKey);
+        } catch (Exception ioe) {
+            Log.d(TAG, "Couldn't install transport: " + ioe);
+        }
+
+        return mTransportConfigFile;
     }
-
-
 
     @Override
     public Connection connect(String addr) {
@@ -107,7 +103,7 @@ public class StegotorusTransport implements Transport {
 
             @Override
             public void transportFailed(String err) {
-                Log.d(TAG,"error starting transport: " + err);
+                Log.d(TAG, "error starting transport: " + err);
             }
         });
 

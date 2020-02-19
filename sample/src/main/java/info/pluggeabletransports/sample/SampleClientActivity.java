@@ -2,6 +2,7 @@ package info.pluggeabletransports.sample;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -222,6 +223,9 @@ public class SampleClientActivity extends Activity {
 
 
       private String initStegotorusTransport() {
+
+        String release = Build.VERSION.RELEASE;
+        int sdkVersion = Build.VERSION.SDK_INT;
 
         new StegotorusTransport().register();
 

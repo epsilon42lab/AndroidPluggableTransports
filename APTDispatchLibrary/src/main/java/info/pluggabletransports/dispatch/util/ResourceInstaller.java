@@ -78,6 +78,28 @@ public class ResourceInstaller implements DispatchConstants {
     }
 
 
+    /*
+     * Copy the configuration file so the transport can access them
+     */
+    public boolean installConfig (String assetKey, boolean overwrite) throws IOException, FileNotFoundException, TimeoutException
+    {
+        InputStream is;
+        File outFile;
+        outFile = new File(installFolder, assetKey);
+
+        if (overwrite || (!outFile.exists())) {
+            deleteDirectory(installFolder);
+
+            installFolder.mkdirs();
+
+            is = context.getAssets().open(assetKey);
+            streamToFile(is, outFile, false, false);
+        }
+
+        return true;
+    }
+
+
 
     /*
      * Write the inputstream contents to the file
