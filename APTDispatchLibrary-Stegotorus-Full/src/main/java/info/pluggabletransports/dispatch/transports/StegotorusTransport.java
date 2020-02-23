@@ -32,7 +32,7 @@ import info.pluggabletransports.dispatch.util.ResourceInstaller;
 import info.pluggabletransports.dispatch.util.TransportListener;
 import info.pluggabletransports.dispatch.util.TransportManager;
 
-//import static info.pluggabletransports.dispatch.DispatchConstants.PT_TRANSPORTS_STEGOTORUS;
+import static info.pluggabletransports.dispatch.DispatchConstants.PT_TRANSPORTS_STEGOTORUS;
 import static info.pluggabletransports.dispatch.DispatchConstants.TAG;
 
 public class StegotorusTransport implements Transport {
@@ -48,8 +48,8 @@ public class StegotorusTransport implements Transport {
 
     @Override
     public void register() {
-        Dispatcher.get().register("stegotorus", getClass());
-    } //PT_TRANSPORTS_STEGOTORUS
+        Dispatcher.get().register(PT_TRANSPORTS_STEGOTORUS, getClass());
+    }
 
     @Override
     public void init(Context context, Properties options) {
@@ -134,8 +134,7 @@ public class StegotorusTransport implements Transport {
     //     return null;
     // }
 
-    @Override
-    public Connection connect(String addr) {
+    public void startTransport() {
 
         mTransportManager.startTransport(new TransportListener() {
             @Override
@@ -148,6 +147,16 @@ public class StegotorusTransport implements Transport {
                 Log.d(TAG,"error starting transport: " + err);
             }
         });
+
+    }
+
+    @Override
+    public Connection connect(String addr) {
+
+        startTransport();
+
+        if (addr == "")
+            return null;
 
         while (!isPortOpen("127.0.0.1", mLocalPort, 5*1000))
         {
