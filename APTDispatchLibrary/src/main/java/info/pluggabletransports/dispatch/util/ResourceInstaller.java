@@ -88,9 +88,9 @@ public class ResourceInstaller implements DispatchConstants {
         outFile = new File(installFolder, assetKey);
 
         if (overwrite || (!outFile.exists())) {
-            deleteDirectory(installFolder);
-
-            installFolder.mkdirs();
+            if (!installFolder.exists())
+                installFolder.mkdirs();
+                //deleteDirectory(installFolder);
 
             is = context.getAssets().open(assetKey);
             streamToFile(is, outFile, false, false);
